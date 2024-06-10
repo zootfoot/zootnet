@@ -1,0 +1,17 @@
+body {
+    height: 100vh;
+    font-family: Poppins, sans-serif;
+    background-color: rgb(18, 18, 18);
+    color: rgb(237, 237, 237);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    width: 12rem;
+    height: 4rem;
+}
