@@ -5,9 +5,46 @@ body {
     color: rgb(237, 237, 237);
 }
 
+#archives {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    padding: 8px;
+    right: 350px;
+    bottom: 18px;
+    width: 188px;
+    height: 224px;
+    border: 1px solid rgb(237, 237, 237);;
+}
+
+#archives-title {
+    position: absolute;
+    left: 6px;
+    bottom: 230px;
+    width: 66px;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(18, 18, 18);
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.archive-link {
+    color: rgb(237, 237, 237);;
+    font-size: 12px;
+}
+
 #text {
     font-size: 25px;
-    font-weight: 500;
+    font-weight: 600;
+}
+
+#wife {
+    position: absolute;
+    width: 200px;
+    left: 425px;
+    bottom: 215px;
+    transform: rotate(-12deg);
 }
 
 #container {
@@ -25,7 +62,7 @@ body {
 #links-container {
     position: absolute;
     bottom: 44px;
-    left: 102px;
+    left: 70px;
     display: flex;
     gap: 10px;
 }
@@ -35,7 +72,7 @@ body {
     height: 221px;
     perspective: 1000px;
     position: fixed;
-    left: 310px;
+    left: 335px;
     bottom: 10px;
 }
 
