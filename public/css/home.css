@@ -1,14 +1,7 @@
-body {
-    height: 100vh;
-    font-family: Poppins, sans-serif;
-    background-color: rgb(18, 18, 18);
-    color: rgb(237, 237, 237);
-}
-
-#archives {
+#links {
     position: absolute;
-    display: none;
     flex-direction: column;
+    display: none;
     padding: 8px;
     right: 350px;
     bottom: 18px;
@@ -17,7 +10,7 @@ body {
     border: 1px solid rgb(237, 237, 237);;
 }
 
-#archives-title {
+#link-title {
     position: absolute;
     left: 6px;
     bottom: 230px;
@@ -29,7 +22,7 @@ body {
     font-weight: 400;
 }
 
-.archive-link {
+.link {
     color: rgb(237, 237, 237);;
     font-size: 12px;
 }
@@ -97,13 +90,13 @@ body {
         content: " →" !important;
     }
 
-    #archives {
+    #links {
         right: 96px !important;
         bottom: -244px !important;
     }
 }
 
-#links-container {
+#profiles-container {
     position: absolute;
     bottom: 44px;
     left: 70px;

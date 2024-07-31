@@ -1,0 +1,1 @@
+web: gunicorn src.app:app 0.0.0.0:$PORT

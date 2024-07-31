@@ -1,0 +1,9 @@
+body {
+    height: 100vh;
+    font-family: Poppins, sans-serif;
+    background-color: rgb(18, 18, 18);
+    color: rgb(237, 237, 237);
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
