@@ -1,7 +1,6 @@
 #links {
     position: absolute;
     flex-direction: column;
-    display: none;
     padding: 8px;
     right: 350px;
     bottom: 18px;

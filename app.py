@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 import os
 
-app = Flask(__name__, static_folder='public', static_url_path='/public')
+app = Flask(__name__, static_folder='public', static_url_path='/')
 app.config.update(
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,
@@ -13,6 +13,10 @@ app.config.update(
 @app.route('/')
 def home():
     return render_template('home.html')
+
+@app.route('/wx')
+def wx():
+    return render_template('wx.html')
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
