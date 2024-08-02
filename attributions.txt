@@ -1,0 +1,4 @@
+Uicons by Flaticon https://www.flaticon.com/uicons
+OSM Icon by ScrubbX https://wiki.openstreetmap.org/wiki/File:Logo_simple.svg
+Map Data from OpenStreetMap Contributors https://www.openstreetmap.org/about/
+Map from Mapbox https://www.mapbox.com/about/maps/
