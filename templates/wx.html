@@ -19,7 +19,16 @@
 </head>
 
 <body>
-    <img id="zootnet" src="../images/zootnet.webp" alt="zootnet icon, mapbox logo, OpenStreetMap logo by ScrubbX">
+    <div id="menu-bar">
+        <button id="menu-bar-button-location" class="menu-bar-button">
+            <img class="menu-icon"src="../svg/location-arrow.svg" alt="Location Button">
+        </button>
+        <button id="menu-bar-button-radar" class="menu-bar-button" onclick="toggleRadarBtns()">
+            <img class="menu-icon"src="../svg/radar.svg" alt="Radar Button">
+        </button>
+    </div>
+
+    <img id="zootnet" src="../images/zootnet.webp" alt="zootnet icon with attributions">
 
     <div id="map"></div>
 

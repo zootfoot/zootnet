@@ -5,30 +5,79 @@
     height: 100%;
 }
 
+
 #zootnet {
     position: absolute;
     right: -70px;
-    bottom: -8px;
+    bottom: 50px;
     transform: scale(0.5);
     z-index: 1;
 }
 
+#menu-bar {
+    width: calc(100% - 30px);
+    position: absolute;
+    left: 5px;
+    height: 36px;
+    bottom: 5px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+    z-index: 1;
+    padding: 10px;
+}
+
+.menu-icon {
+    width: 75%;
+    height: 75%;
+}
+
+.menu-bar-button {
+    height: 42px;
+    width: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+#menu-bar-button-radar {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
 .radar-site-button {
-    width: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 6px;
+    padding-right: 6px;
     height: 22px;
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 6px;
     border: 0;
     color: white;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
 }
 
 .radar-site-button-selected {
-    background-color: rgba(0, 255, 76, 0.8) !important;
+    background-color: rgba(19, 162, 61, 0.8) !important;
 }
 
 .mapboxgl-control-container {
     display: none;
+}
+
+@media only screen and (min-width: 768px) {
+    #menu-bar {
+        display: none;
+    }
+
+    #zootnet {
+        bottom: -8px !important;
+    }
 }

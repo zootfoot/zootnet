@@ -9,6 +9,7 @@ const map = new mapboxgl.Map({
 });
 
 let selectedRadarBtn = null;
+let radarBtnEnabled = true;
 
 async function fetchRadarStations() {
     const response = await fetch('https://api.weather.gov/radar/stations');
@@ -34,6 +35,29 @@ function addRadarSiteBtn(longitude, latitude, id, name) {
     new mapboxgl.Marker(radarSiteBtn)
         .setLngLat([longitude, latitude])
         .addTo(map);
+}
+
+function toggleRadarBtns() {
+    let menuBarBtnRadar = document.getElementById('menu-bar-button-radar')
+    let radarBtns = document.getElementsByClassName('radar-site-button');
+
+    if (radarBtnEnabled) {
+        radarBtnEnabled = false
+
+        menuBarBtnRadar.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+
+        for (let i = 0; i < radarBtns.length; i++) {
+            radarBtns[i].style.visibility = 'hidden';
+        }
+    } else {
+        radarBtnEnabled = true
+
+        menuBarBtnRadar.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
+
+        for (let i = 0; i < radarBtns.length; i++) {
+            radarBtns[i].style.visibility = 'visible';
+        }
+    }
 }
 
 async function initRadarSites() {
