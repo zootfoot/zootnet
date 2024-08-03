@@ -83,12 +83,8 @@
     color: rgb(255, 255, 255);
     transform: scale(1.5);
 }
-
-.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
-    border-top-color: rgb(21, 21, 21) !important;
-}
-
 .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+    border-top-color: rgb(21, 21, 21) !important;
     border-bottom-color: rgb(21, 21, 21) !important;
 }
 

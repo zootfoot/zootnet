@@ -202,6 +202,8 @@ function addPolygonToMap(geometry, alert) {
     });
 }
 
+window.toggleRadarBtns = toggleRadarBtns;
+
 initRadarSites();
 addKMZLayer();
 addWeatherAlertsToMap();
