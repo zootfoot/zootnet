@@ -74,36 +74,6 @@ async function initRadarSites() {
     });
 }
 
-async function fetchKMZ() {
-    const response = await fetch('https://www.spc.noaa.gov/products/md/ActiveMD.kmz');
-    const arrayBuffer = await response.arrayBuffer();
-    const zip = await JSZip.loadAsync(arrayBuffer);
-    const kmlString = await zip.file('ActiveMD.kml').async('string');
-    const kmlDoc = new DOMParser().parseFromString(await kmlString, 'application/xml');
-    const geojson = toGeoJSON.kml(kmlDoc);
-    console.log(geojson)
-    return geojson;
-}
-
-async function addKMZLayer() {
-    const geojson = await fetchKMZ();
-    map.addSource('kmz-source', {
-        type: 'geojson',
-        data: geojson
-    });
-
-    map.addLayer({
-        id: 'kmz-layer',
-        type: 'fill',
-        source: 'kmz-source',
-        layout: {},
-        paint: {
-            'fill-color': '#888888',
-            'fill-opacity': 0.4
-        }
-    });
-}
-
 async function fetchWeatherAlerts() {
     const response = await fetch('https://api.weather.gov/alerts/active');
     const data = await response.json();
@@ -188,7 +158,7 @@ function addPolygonToMap(geometry, alert) {
             .setHTML(`
                 <h3>${alert.properties.headline}</h3>
                 <p><strong>Severity:</strong> ${alert.properties.severity}</p>
-                <button>View Details</button>
+                <button class="alert-popup-details-button">View Details</button>
             `)
             .addTo(map);
     });
@@ -205,5 +175,4 @@ function addPolygonToMap(geometry, alert) {
 window.toggleRadarBtns = toggleRadarBtns;
 
 initRadarSites();
-addKMZLayer();
 addWeatherAlertsToMap();
