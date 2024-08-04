@@ -82,94 +82,109 @@ async function fetchWeatherAlerts() {
 
 async function addWeatherAlertsToMap() {
     const alerts = await fetchWeatherAlerts();
+    const polygonFeatures = [];
 
     alerts.forEach(alert => {
-        if (alert.geometry && alert.geometry.coordinates) {
-            if (alert.geometry.type === 'Point') {
-                const [longitude, latitude] = alert.geometry.coordinates;
-                if (longitude !== null && latitude !== null) {
-                    createAlertMarker([longitude, latitude], alert);
+        if (alert.geometry && (alert.geometry.type === 'Polygon' || alert.geometry.type === 'MultiPolygon')) {
+            const alertColor = getAlertColor(alert.properties.event);
+            const features = createPolygonFeatures(alert.geometry, alert, alertColor);
+            polygonFeatures.push(...features);
+        }
+    });
+
+    map.on('load', () => {
+        if (polygonFeatures.length > 0) {
+            map.addSource('weather-alert-polygons', {
+                type: 'geojson',
+                data: {
+                    type: 'FeatureCollection',
+                    features: polygonFeatures
                 }
-            } else if (alert.geometry.type === 'Polygon' || alert.geometry.type === 'MultiPolygon') {
-                addPolygonToMap(alert.geometry, alert);
-            }
+            });
+
+            map.addLayer({
+                id: 'weather-alert-polygons-fill',
+                type: 'fill',
+                source: 'weather-alert-polygons',
+                paint: {
+                    'fill-color': ['get', 'alertColor'],
+                    'fill-opacity': 0.3
+                }
+            });
+
+            map.addLayer({
+                id: 'weather-alert-polygons-outline',
+                type: 'line',
+                source: 'weather-alert-polygons',
+                paint: {
+                    'line-color': ['get', 'alertColor'],
+                    'line-width': 2
+                }
+            });
+
+            map.on('click', 'weather-alert-polygons-fill', (e) => {
+                const coordinates = e.lngLat;
+                const properties = e.features[0].properties;
+                showPopup(coordinates, properties);
+            });
+
+            map.on('mouseenter', 'weather-alert-polygons-fill', () => {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+
+            map.on('mouseleave', 'weather-alert-polygons-fill', () => {
+                map.getCanvas().style.cursor = '';
+            });
         }
     });
 }
 
-function addPolygonToMap(geometry, alert) {
-    const alertColor = getAlertColor(alert.properties.event);
-    let features = [];
+function createPolygonFeatures(geometry, alert, alertColor) {
+    const features = [];
 
     if (geometry.type === 'Polygon') {
         features.push({
             type: 'Feature',
             geometry: {
                 type: 'Polygon',
-                coordinates: geometry.coordinates // Exterior ring
+                coordinates: geometry.coordinates
             },
-            properties: alert.properties
+            properties: {
+                alertColor: alertColor,
+                headline: alert.properties.headline,
+                severity: alert.properties.severity,
+                details: alert.properties.description
+            }
         });
     } else if (geometry.type === 'MultiPolygon') {
-        geometry.coordinates.forEach((polygon) => {
+        geometry.coordinates.forEach(polygon => {
             features.push({
                 type: 'Feature',
                 geometry: {
                     type: 'Polygon',
-                    coordinates: polygon // Each exterior ring in the MultiPolygon
+                    coordinates: polygon
                 },
-                properties: alert.properties
+                properties: {
+                    alertColor: alertColor,
+                    headline: alert.properties.headline,
+                    severity: alert.properties.severity,
+                    details: alert.properties.description
+                }
             });
         });
     }
+    return features;
+}
 
-    map.addSource(`polygon-${alert.id}`, {
-        type: 'geojson',
-        data: {
-            type: 'FeatureCollection',
-            features: features
-        }
-    });
-
-    map.addLayer({
-        id: `polygon-fill-${alert.id}`,
-        type: 'fill',
-        source: `polygon-${alert.id}`,
-        paint: {
-            'fill-color': alertColor,
-            'fill-opacity': 0.3
-        }
-    });
-
-    map.addLayer({
-        id: `polygon-outline-${alert.id}`,
-        type: 'line',
-        source: `polygon-${alert.id}`,
-        paint: {
-            'line-color': alertColor,
-            'line-width': 2
-        }
-    });
-
-    map.on('click', `polygon-fill-${alert.id}`, (e) => {
-        const coordinates = e.lngLat;
-        const popup = new mapboxgl.Popup({ offset: 25 })
-            .setLngLat(coordinates)
-            .setHTML(`
-                <h3>${alert.properties.headline}</h3>
-                <p><strong>Severity:</strong> ${alert.properties.severity}</p>
-                <button class="alert-popup-details-button">View Details</button>
-            `)
-            .addTo(map);
-    });
-
-    map.on('mouseenter', `polygon-fill-${alert.id}`, () => {
-        map.getCanvas().style.cursor = 'pointer';
-    });
-
-    map.on('mouseleave', `polygon-fill-${alert.id}`, () => {
-        map.getCanvas().style.cursor = '';
-    });
+function showPopup(coordinates, properties) {
+    new mapboxgl.Popup({ offset: 25 })
+        .setLngLat(coordinates)
+        .setHTML(`
+            <h3>${properties.headline}</h3>
+            <p><strong>Severity:</strong> ${properties.severity}</p>
+            <button class="alert-popup-details-button">View Details</button>
+        `)
+        .addTo(map);
 }
 
 window.toggleRadarBtns = toggleRadarBtns;
