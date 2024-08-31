@@ -1,4 +1,4 @@
-import { getAlertColor } from '../js/getAlertColor.js'
+import { getAlertDetails } from '../js/getAlertDetails.js'
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoiem9vdGZvb3QiLCJhIjoiY2x6YXcwdnN4MHNpZDJtcHk5d2hjY2Q3YyJ9.VZD3RFi5OE8b4zA3gl6YVQ';
 const map = new mapboxgl.Map({
@@ -86,7 +86,7 @@ async function addWeatherAlertsToMap() {
 
     alerts.forEach(alert => {
         if (alert.geometry && (alert.geometry.type === 'Polygon' || alert.geometry.type === 'MultiPolygon')) {
-            const alertColor = getAlertColor(alert.properties.event);
+            const alertColor = getAlertDetails(alert.properties.event).color;
             const features = createPolygonFeatures(alert.geometry, alert, alertColor);
             polygonFeatures.push(...features);
         }
@@ -151,6 +151,7 @@ function createPolygonFeatures(geometry, alert, alertColor) {
             },
             properties: {
                 alertColor: alertColor,
+                event: alert.properties.event,
                 headline: alert.properties.headline,
                 severity: alert.properties.severity,
                 details: alert.properties.description
@@ -166,6 +167,7 @@ function createPolygonFeatures(geometry, alert, alertColor) {
                 },
                 properties: {
                     alertColor: alertColor,
+                    event: alert.properties.event,
                     headline: alert.properties.headline,
                     severity: alert.properties.severity,
                     details: alert.properties.description
@@ -177,14 +179,25 @@ function createPolygonFeatures(geometry, alert, alertColor) {
 }
 
 function showPopup(coordinates, properties) {
+    const alertDetails = getAlertDetails(properties.event);
+    const alertColor = alertDetails.color;
+    const brightness = getBrightness(alertColor);
+    const textColor = brightness < 128 ? 'white' : 'black';
+
     new mapboxgl.Popup({ offset: 25 })
         .setLngLat(coordinates)
         .setHTML(`
             <h3>${properties.headline}</h3>
             <p><strong>Severity:</strong> ${properties.severity}</p>
-            <button class="alert-popup-details-button">View Details</button>
+            <button style="background-color: ${alertColor}; color: ${textColor};" class="alert-popup-details-button">View Details</button>
         `)
         .addTo(map);
+}
+
+function getBrightness(rgbString) {
+    const match = rgbString.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    const [, r, g, b] = match.map(Number);
+    return Math.round((r * 0.299) + (g * 0.587) + (b * 0.114));
 }
 
 window.toggleRadarBtns = toggleRadarBtns;
