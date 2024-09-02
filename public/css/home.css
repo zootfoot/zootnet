@@ -14,7 +14,7 @@
     position: absolute;
     left: 6px;
     bottom: 230px;
-    width: 66px;
+    width: 44px;
     display: flex;
     justify-content: center;
     background-color: rgb(18, 18, 18);
@@ -28,7 +28,7 @@
 }
 
 .offline {
-    color: rgb(192, 33, 33);
+    color: rgb(175, 32, 32);
 }
 
 #text {
